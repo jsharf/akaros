@@ -30,6 +30,7 @@ struct guest_thread {
 	struct uthread				uthread;
 	struct ctlr_thread			*buddy;
 	unsigned int				gpc_id;
+	bool						halt_exit;
 	uth_mutex_t					halt_mtx;
 	uth_cond_var_t				halt_cv;
 };
@@ -79,5 +80,9 @@ void start_guest_thread(struct guest_thread *gth);
 /* Start and run a task thread. */
 struct task_thread *vmm_run_task(struct virtual_machine *vm,
                                  void (*func)(void *), void *arg);
+
+int vthread_attr_init(struct virtual_machine *vm, int vmmflags);
+int vthread_attr_kernel_init(struct virtual_machine *vm, int vmmflags);
+int vthread_create(struct virtual_machine *vm, int guest, void *rip, void *arg);
 
 __END_DECLS
